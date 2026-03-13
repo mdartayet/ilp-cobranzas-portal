@@ -98,7 +98,7 @@ function App() {
   const notifyPaymentStatus = async (status) => {
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session') || 'DEMO_ILP_2026'; 
-    const phone = urlParams.get('phone') || '593962206252'; // Teléfono dinámico desde la URL
+    const phone = urlParams.get('phone') || '593984029295'; // Teléfono dinámico desde la URL
 
     const payment_success = status === 'success';
     

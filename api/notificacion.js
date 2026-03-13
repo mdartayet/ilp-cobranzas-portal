@@ -4,7 +4,7 @@ export default async function handler(req, res) {
     
     // Aquí configuramos el número de teléfono al que CallPilot llamará/escribirá.
     // Usamos el del ejemplo de IT por defecto, o puedes pasarlo desde el frontend.
-    const targetPhone = phone || "593962206252"; 
+    const targetPhone = phone || "593984029295"; 
     
     const callpilotPayload = {
         "contact_list": [
