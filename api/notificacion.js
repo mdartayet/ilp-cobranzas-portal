@@ -4,18 +4,13 @@ export default function handler(req, res) {
     
     console.log('Notificación recibida de Vercel Portal:', { session_id, payment_success, rnc, nombre, status, monto });
     
-    // Respondemos con los datos que CallPilot necesita para su flujo
+    // Respondemos con los prefijos @ requeridos por CallPilot
     return res.status(200).json({ 
-      status: 'success', 
-      message: 'Notificación procesada correctamente',
-      data: {
-        rnc: rnc || "131-01314-3",
-        nombre: nombre || "Carlos de la Mota",
-        status_transaccion: status || (payment_success ? "Aprobado" : "Declinado"),
-        monto_pagado: monto || "0.00",
-        session_id: session_id || "DEMO_ILP_2026",
-        payment_success: payment_success
-      }
+      "@status": "success",
+      "@rnc": rnc || "131-01314-3",
+      "@name": nombre || "Carlos de la Mota",
+      "@status_transaccion": status || (payment_success ? "Aprobado" : "Declinado"),
+      "@monto_pagado": monto || "0.00"
     });
   } else {
     res.setHeader('Allow', ['POST']);
