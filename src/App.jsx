@@ -96,9 +96,9 @@ function App() {
   };
 
   const notifyPaymentStatus = async (status) => {
-    // Capturamos el ID de sesión de la URL para saber qué flujo de CallPilot disparar
+    // Capturamos el ID de sesión de la URL. Si no hay, ponemos uno estático para el Demo.
     const urlParams = new URLSearchParams(window.location.search);
-    const sessionId = urlParams.get('session'); 
+    const sessionId = urlParams.get('session') || 'DEMO_ILP_2026'; 
 
     // Definimos el booleano que espera tu servicio inicial en CallPilot
     const payment_success = status === 'success';
