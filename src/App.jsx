@@ -96,20 +96,29 @@ function App() {
   };
 
   const notifyPaymentStatus = async (status) => {
-    // Capturamos el ID de sesión de la URL. Si no hay, ponemos uno estático para el Demo.
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session') || 'DEMO_ILP_2026'; 
 
-    // Definimos el booleano que espera tu servicio inicial en CallPilot
     const payment_success = status === 'success';
+    
+    // Datos extendidos para el demo
+    const paymentData = {
+      session_id: sessionId,
+      rnc: "131-01314-3",
+      nombre: "Carlos de la Mota",
+      status: payment_success ? "Aprobado" : "Declinado",
+      monto: total.toFixed(2),
+      payment_success: payment_success
+    };
 
-    // Este es el consumo del servicio inicial que dispara el Trigger de tu otro workflow
     try {
-      // Enviamos el booleano payment_success (true/false) y el session_id
-      await fetch(`https://api.callpilot.ai/webhook/notify?session_id=${sessionId}&payment_success=${payment_success}&amount=${total}`, {
-        mode: 'no-cors'
+      // Notificamos a la API interna que sirve como trigger para CallPilot
+      await fetch('/api/notificacion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(paymentData)
       });
-      console.log(`Workflow Triggered: Success=${payment_success}, Session=${sessionId}`);
+      console.log(`Workflow Triggered:`, paymentData);
     } catch (e) {
       console.error("Error disparando el workflow:", e);
     }
