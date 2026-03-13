@@ -96,18 +96,25 @@ function App() {
   };
 
   const notifyPaymentStatus = async (status) => {
-    const message = status === 'success' 
-      ? `Pago exitoso de DOP ${total.toLocaleString('en-US', { minimumFractionDigits: 2 })} para Carlos de la Mota.`
-      : `Intento de pago fallido para Carlos de la Mota.`;
-    
-    // Keep background notification to CallPilot as requested previously
+    // Capturamos el ID de sesión de la URL para saber qué flujo de CallPilot disparar
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get('session'); 
+
+    // Definimos el booleano que espera tu servicio inicial en CallPilot
+    const payment_success = status === 'success';
+
+    // Este es el consumo del servicio inicial que dispara el Trigger de tu otro workflow
     try {
-      await fetch(`https://api.callpilot.ai/webhook/notify?status=${status}&amount=${total}&client=CarlosDeLaMota&msg=${encodeURIComponent(message)}`, {
+      // Enviamos el booleano payment_success (true/false) y el session_id
+      await fetch(`https://api.callpilot.ai/webhook/notify?session_id=${sessionId}&payment_success=${payment_success}&amount=${total}`, {
         mode: 'no-cors'
       });
-    } catch (e) {}
+      console.log(`Workflow Triggered: Success=${payment_success}, Session=${sessionId}`);
+    } catch (e) {
+      console.error("Error disparando el workflow:", e);
+    }
 
-    if (status === 'success') {
+    if (payment_success) {
       alert('¡Transacción Exitosa! Su pago ha sido procesado.');
       setView('portal');
       setSelectedIds([]);
