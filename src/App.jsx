@@ -98,12 +98,14 @@ function App() {
   const notifyPaymentStatus = async (status) => {
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session') || 'DEMO_ILP_2026'; 
+    const phone = urlParams.get('phone') || '593962206252'; // Teléfono dinámico desde la URL
 
     const payment_success = status === 'success';
     
     // Datos extendidos para el demo
     const paymentData = {
       session_id: sessionId,
+      phone: phone, // Enviamos el teléfono dinámico a la API
       rnc: "131-01314-3",
       nombre: "Carlos de la Mota",
       status: payment_success ? "Aprobado" : "Declinado",
